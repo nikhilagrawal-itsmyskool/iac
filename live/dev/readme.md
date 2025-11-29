@@ -1,4 +1,5 @@
 terragrunt backend bootstrap
+terragrunt init --upgrade
 
 network
 security-group
