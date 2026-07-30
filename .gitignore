@@ -36,3 +36,8 @@ override.tf.json
 terraform.rc
 .terraform.lock.hcl
 
+.env
+
+# LibreOffice Lambda layer binary (~91 MB, pulled from shelfio LFS; Terraform
+# uploads it to S3 locally — do not commit to this non-LFS repo)
+libreoffice-layer.zip
