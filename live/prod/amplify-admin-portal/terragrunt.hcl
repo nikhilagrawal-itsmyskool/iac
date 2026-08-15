@@ -34,6 +34,12 @@ inputs = merge(
       VITE_API_BASE_URL = "https://api-prod.itsmyskool.com"
       # No VITE_SCHOOL_CODE: getSchoolCode() derives it at runtime from the leftmost
       # hostname label (src/config/api.js), so it must NOT be baked in at build time.
+
+      # Cloudflare Turnstile sitekey for the login bot check. Public value (safe to
+      # commit). Injected into .env.production by the build_spec below because that
+      # preBuild step rewrites .env.production from scratch and would otherwise drop
+      # the committed sitekey. The private secret lives in the API's prod.yml, not here.
+      VITE_TURNSTILE_SITEKEY = "0x4AAAAAAEQZDj7_MQqdQ3uh"
     }
 
     build_spec = <<-EOT
@@ -45,6 +51,7 @@ inputs = merge(
               - npm ci
               - 'echo "VITE_API_BASE_URL=$VITE_API_BASE_URL" > .env.production'
               - 'echo "VITE_SCHOOL_CODE=$VITE_SCHOOL_CODE" >> .env.production'
+              - 'echo "VITE_TURNSTILE_SITEKEY=$VITE_TURNSTILE_SITEKEY" >> .env.production'
           build:
             commands:
               - npm run build:prod
