@@ -21,7 +21,10 @@ inputs = merge(
   {
     layer_name     = "${local.prod_config.inputs.stage}-${local.prod_config.inputs.prefix}-libreoffice"
     layer_zip_path = "${get_terragrunt_dir()}/libreoffice-layer.zip"
-    layer_version  = "v1.0.0"
+    # v1.1.0: added Noto Sans Devanagari (Regular+Bold) under
+    # instdir/share/fonts/truetype/ so Hindi/Vyakaran (Devanagari, authored in
+    # Nirmala UI) render in docx->pdf conversion instead of coming out blank.
+    layer_version  = "v1.1.0"
 
     bucket_name       = "${local.prod_config.inputs.stage}-${local.prod_config.inputs.prefix}-lambda-layer"
     create_bucket     = true
