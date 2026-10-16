@@ -19,13 +19,11 @@ generate "provider" {
   contents = <<EOF
     provider "aws" {
       region = "ap-south-1"
-      shared_credentials_files = ["/home/nikhil/.aws/credentials"]
       profile = "prod-itsmyskool-nikhil.agrawal"
     }
     provider "aws" {
       alias = "us-east-1"
       region = "us-east-1"
-      shared_credentials_files = ["/home/nikhil/.aws/credentials"]
       profile = "prod-itsmyskool-nikhil.agrawal"
     }
 EOF
@@ -43,7 +41,6 @@ remote_state {
     encrypt = true
     dynamodb_table = "itsmyskool-lock-table"
     region = "ap-south-1"
-    shared_credentials_file = "/home/nikhil/.aws/credentials"
     profile = "prod-itsmyskool-nikhil.agrawal"
   }
 }
