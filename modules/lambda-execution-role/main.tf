@@ -48,6 +48,19 @@ resource "aws_iam_role_policy" "lambda" {
         Action   = ["SQS:SendMessage"]
         Resource = "*"
       },
+      {
+        # Read prod SSM parameters (e.g. the DB app_user password) at runtime.
+        Effect   = "Allow"
+        Action   = ["ssm:GetParameter", "ssm:GetParameters"]
+        Resource = "arn:aws:ssm:${var.region}:${var.account_id}:parameter/itsmyskool/prod/*"
+      },
+      {
+        # Decrypt SecureString values, limited to those fetched via SSM.
+        Effect    = "Allow"
+        Action    = ["kms:Decrypt"]
+        Resource  = "*"
+        Condition = { StringEquals = { "kms:ViaService" = "ssm.${var.region}.amazonaws.com" } }
+      },
     ]
   })
 }
