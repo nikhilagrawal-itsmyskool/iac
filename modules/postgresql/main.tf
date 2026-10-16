@@ -53,8 +53,8 @@ resource "aws_db_instance" "postgresql" {
   monitoring_interval             = 0 # Disable enhanced monitoring for smallest instance
   monitoring_role_arn             = null
 
-  # Deletion protection (set to false for dev environment)
-  deletion_protection = false
+  # Deletion protection (enable in prod via var; defaults off for dev)
+  deletion_protection = var.deletion_protection
   skip_final_snapshot = true
 
   # Tags

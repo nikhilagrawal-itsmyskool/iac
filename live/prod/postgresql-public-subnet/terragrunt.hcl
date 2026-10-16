@@ -33,8 +33,10 @@ inputs = merge(
     engine_version = "18.4"
 
     # Graviton (ARM) burstable, smallest tier
-    instance_class = "db.t4g.micro"
+    instance_class = "db.t4g.small"
     identifier     = "${local.prod_config.inputs.stage}-${local.prod_config.inputs.method}-${local.prod_config.inputs.prefix}-postgresql-public"
+
+    deletion_protection = true
 
     db_name     = "itsmyskool_prod"
     db_username = "postgres"

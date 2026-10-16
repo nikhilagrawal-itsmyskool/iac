@@ -100,6 +100,12 @@ variable "backup_retention_period" {
   default     = 7
 }
 
+variable "deletion_protection" {
+  description = "Enable deletion protection on the RDS instance (recommended true for prod)"
+  type        = bool
+  default     = false
+}
+
 variable "tags" {
   description = "Tags to apply to resources"
   type        = map(string)
