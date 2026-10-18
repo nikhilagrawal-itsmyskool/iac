@@ -40,7 +40,7 @@ inputs = merge(
 
     db_name     = "itsmyskool_prod"
     db_username = "postgres"
-    db_password = "DCmBQd9aHVXOxNGJwzLvCXfUKWoc"
+    db_password_ssm_param = "/itsmyskool/prod/postgresql-public/master_password"
 
     tags = {
       Name = "${local.prod_config.inputs.stage}-${local.prod_config.inputs.method}-${local.prod_config.inputs.prefix}-postgresql-public"

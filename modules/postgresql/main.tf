@@ -1,3 +1,14 @@
+# Master password: read from SSM (db_password_ssm_param) when set, otherwise the
+# db_password variable. Sourcing from SSM keeps the secret out of git.
+data "aws_ssm_parameter" "db_password" {
+  count = var.db_password_ssm_param != null ? 1 : 0
+  name  = var.db_password_ssm_param
+}
+
+locals {
+  master_password = var.db_password_ssm_param != null ? data.aws_ssm_parameter.db_password[0].value : var.db_password
+}
+
 # DB Subnet Group - requires at least 2 subnets in different AZs
 resource "aws_db_subnet_group" "postgresql" {
   name = "${var.identifier}-subnet-group"
@@ -26,7 +37,7 @@ resource "aws_db_instance" "postgresql" {
   # Database configuration
   db_name  = var.db_name
   username = var.db_username
-  password = var.db_password
+  password = local.master_password
 
   # Storage configuration
   allocated_storage     = var.allocated_storage

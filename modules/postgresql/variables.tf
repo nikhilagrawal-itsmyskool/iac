@@ -76,8 +76,14 @@ variable "db_username" {
 }
 
 variable "db_password" {
-  description = "Master password for the database"
+  description = "Master password for the database. Leave null and set db_password_ssm_param to source it from SSM instead."
   sensitive   = true
+  default     = null
+}
+
+variable "db_password_ssm_param" {
+  description = "SSM SecureString parameter name to read the master password from. Takes precedence over db_password and keeps the secret out of git."
+  default     = null
 }
 
 variable "engine_version" {
