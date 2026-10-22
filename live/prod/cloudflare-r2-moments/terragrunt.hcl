@@ -36,6 +36,12 @@ inputs = merge(
     cloudflare_account_id = get_env("CLOUDFLARE_ACCOUNT_ID", "")
     bucket_name           = "${local.prod_config.inputs.stage}-${local.prod_config.inputs.prefix}-moments"
     jurisdiction          = "default"
+    # Origins allowed to upload Moments video straight to R2 (presigned PUT). Prod admin portal
+    # + local dev. Reads (presigned GET) don't need CORS, so this is upload-only.
+    cors_allowed_origins = [
+      "https://dbpasn.itsmyskool.com",
+      "http://localhost:5173",
+    ]
     tags = {
       Name = "${local.prod_config.inputs.stage}-${local.prod_config.inputs.method}-${local.prod_config.inputs.prefix}-moments"
     }

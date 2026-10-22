@@ -25,6 +25,28 @@ resource "cloudflare_r2_bucket" "bucket" {
   jurisdiction = var.jurisdiction
 }
 
+# CORS so a browser can upload LARGE objects (e.g. Moments video) straight to R2 via a
+# presigned PUT — without it the browser's preflight blocks the cross-origin request. This is
+# bucket config (object-scoped creds can't set it), so it belongs here in IaC next to the
+# bucket. Created only when origins are supplied; the GET path (presigned reads) doesn't need
+# CORS, so photos were fine without it.
+resource "cloudflare_r2_bucket_cors" "bucket" {
+  count       = length(var.cors_allowed_origins) > 0 ? 1 : 0
+  account_id  = var.cloudflare_account_id
+  bucket_name = cloudflare_r2_bucket.bucket.name
+
+  rules = [{
+    id = "admin-portal-direct-upload"
+    allowed = {
+      methods = ["GET", "PUT", "HEAD"]
+      origins = var.cors_allowed_origins
+      headers = ["*"]
+    }
+    expose_headers  = ["ETag"]
+    max_age_seconds = 3600
+  }]
+}
+
 # Look up the object read/write permission-group id by name (v5 data source).
 data "cloudflare_account_api_token_permission_groups_list" "r2_item_write" {
   account_id = var.cloudflare_account_id

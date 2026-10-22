@@ -24,3 +24,9 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "cors_allowed_origins" {
+  description = "Browser origins allowed to upload directly to the bucket (presigned PUT). Empty = no CORS resource (bucket stays upload-closed to browsers)."
+  type        = list(string)
+  default     = []
+}
